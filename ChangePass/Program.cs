@@ -43,47 +43,56 @@ PowerShell ps = PowerShell.Create();
 PowerShell psOut = PowerShell.Create();
 ps.Runspace = rs;
 
-using (StreamReader reader = new StreamReader(path))
-{
-    string? line;
-    while ((line = await reader.ReadLineAsync()) != null)
+    using (StreamReader reader = new StreamReader(path))
     {
-        Data[i] = line.Remove(0, 12);
-        Console.WriteLine(Data[i]);
-        i++;
-        Array.Resize(ref Data, i + 1);
+        string? line;
+        while ((line = await reader.ReadLineAsync()) != null)
+        {
+            Data[i] = line;
+            if (Data[i].Contains(@"\") == true)
+            {
+                Data[i] = line.Remove(0, 12);
+            }
 
+            Console.WriteLine(Data[i]);
+            i++;
+            Array.Resize(ref Data, i + 1);
+
+        }
+        Array.Resize(ref Data, i);
+        Console.WriteLine(Data.Length);
     }
-    Array.Resize(ref Data, i);
-    Console.WriteLine(Data.Length);
-}
 
-using (StreamWriter writer = new StreamWriter(path, false))
-{
+    using (StreamWriter writer = new StreamWriter(path, false))
+    {
+        for (i = 0; i < Data.Length; i++)
+        {
+            pasic = NewPas();
+            ps.AddStatement();
+            ps.AddCommand("Set-ADAccountPassword");
+            ps.AddArgument(Data[i]);
+            ps.AddParameter("-Reset");
+            SecureString pas = new NetworkCredential("", pasic).SecurePassword;
+            ps.AddParameter("-NewPassword", pas);
+            ps.AddParameter("–PassThru");
+            await writer.WriteLineAsync(Data[i] + ' ' + pasic);
+        }
+        Console.WriteLine("WORK IN PROGRESS");
+        ps.Invoke();
+        Console.WriteLine("DONE");
+    }
+
+
+    Console.WriteLine("PREPARING REPORT:");
+    // Call the PowerShell.Invoke() method to run
+    // the pipeline synchronously.
     for (i = 0; i < Data.Length; i++)
     {
-        pasic = NewPas();
-        ps.AddCommand("Set-ADAccountPassword");
-        ps.AddArgument(Data[i]);
-        ps.AddParameter("-Reset");
-        SecureString pas = new NetworkCredential("", pasic).SecurePassword;
-        ps.AddParameter("-NewPassword", pas);
-        ps.AddParameter("–PassThru");
-        await writer.WriteLineAsync(Data[i] + ' ' + pasic);
         psOut.AddStatement().AddCommand("Get-ADUser").AddArgument(Data[i]).AddParameter("-properties", "PasswordLastSet");
     }
-    Console.WriteLine("WORK IN PROGRESS");
-    ps.Invoke();
-    Console.WriteLine("DONE");
-}
-
-
-Console.WriteLine("PREPARING REPORT:");
-// Call the PowerShell.Invoke() method to run
-// the pipeline synchronously.
-foreach (PSObject result in psOut.Invoke())
+    foreach (PSObject result in psOut.Invoke())
 {
-    Console.WriteLine("{0,-20}{1}",
+    Console.WriteLine("{0,-50}{1}",
                 result.Members["Name"].Value,
                 result.Members["PasswordLastSet"].Value);
 } // End foreach.
