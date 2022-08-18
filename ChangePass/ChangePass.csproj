@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cake.Powershell" Version="2.0.0" />
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
   </ItemGroup>
 
 </Project>

@@ -240,3 +240,4 @@ C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\obj\Debug\net6.0\refint\C
 C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\obj\Debug\net6.0\ChangePass.pdb
 C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\obj\Debug\net6.0\ChangePass.genruntimeconfig.cache
 C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\obj\Debug\net6.0\ref\ChangePass.dll
+C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\bin\Debug\net6.0\DotNetZip.dll

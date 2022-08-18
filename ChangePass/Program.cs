@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Ionic.Zip;
+using Ionic.Zlib;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Net;
@@ -13,23 +15,11 @@ string path = "/Users/ssaprankov/Desktop/pas.txt";
 int i = 0;
 string pasic;
 string[] Data = new string[1];
-
-
-// Call the InitialSessionState.CreateDefault method to create
-// an empty InitialSessionState object, and then add the
-// elements that will be available when the runspace is opened.
-InitialSessionState iss = InitialSessionState.CreateDefault();
-SessionStateVariableEntry var1 = new
-    SessionStateVariableEntry("test1",
-                              "MyVar1",
-                              "Initial session state MyVar1 test");
-iss.Variables.Add(var1);
-
-SessionStateVariableEntry var2 = new
-    SessionStateVariableEntry("test2",
-                              "MyVar2",
-                              "Initial session state MyVar2 test");
-iss.Variables.Add(var2);
+    
+    // Call the InitialSessionState.CreateDefault method to create
+    // an empty InitialSessionState object, and then add the
+    // elements that will be available when the runspace is opened.
+    InitialSessionState iss = InitialSessionState.CreateDefault();
 
 // Call the RunspaceFactory.CreateRunspace(InitialSessionState)
 // method to create the runspace where the pipeline is run.
@@ -78,7 +68,7 @@ ps.Runspace = rs;
             await writer.WriteLineAsync(Data[i] + ' ' + pasic);
         }
         Console.WriteLine("WORK IN PROGRESS");
-        ps.Invoke();
+       // ps.Invoke();
         Console.WriteLine("DONE");
     }
 
@@ -91,14 +81,37 @@ ps.Runspace = rs;
         psOut.AddStatement().AddCommand("Get-ADUser").AddArgument(Data[i]).AddParameter("-properties", "PasswordLastSet");
     }
     foreach (PSObject result in psOut.Invoke())
-{
-    Console.WriteLine("{0,-50}{1}",
-                result.Members["Name"].Value,
-                result.Members["PasswordLastSet"].Value);
-} // End foreach.
+    {
+        Console.WriteLine("{0,-50}{1}",
+                    result.Members["Name"].Value,
+                    result.Members["PasswordLastSet"].Value);
+    } // End foreach.
 
-// Close the runspace to free resources.
-rs.Close();
+    // Close the runspace to free resources.
+    rs.Close();
+
+    using (var zip = new ZipFile())
+    {
+        // оставляем комментарий к архиву
+        zip.Comment = "Archive created by " + "SAM" + " at " + DateTime.Now;
+
+        // добавляем незапароленный файл в архив
+        //zip.AddFile(path);
+
+        // устанавливаем пароль к архиву
+        zip.Password = "Qq1234567890!";
+
+        // добавляем файл в архив, этот файл будет доступен только с вводом пароля, т.к. выше был установлен пароль
+        zip.AddFile(path);
+
+        // установка уровня сжатия
+        zip.CompressionLevel = CompressionLevel.BestCompression;
+
+        // сохраняем архив
+        zip.Save("pas.zip");
+    }
+
+    System.Diagnostics.Process.Start(@"C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\bin\Debug\net6.0\Send.exe");
 
 }
 catch (Exception)

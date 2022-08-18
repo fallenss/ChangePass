@@ -43,6 +43,10 @@
             "Cake.Powershell": {
               "target": "Package",
               "version": "[2.0.0, )"
+            },
+            "DotNetZip": {
+              "target": "Package",
+              "version": "[1.16.0, )"
             }
           },
           "imports": [

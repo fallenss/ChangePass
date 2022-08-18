@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "LGcG1500nTvEeNugX8VRXKJWb0S86EljrXxwyTe3O6io2UfiqxW437MI4Il8eSldB3JZEJUjz73S3cYsohJ8rw==",
+  "dgSpecHash": "rXSZMB9VO3C3QCTBKkyJWC6Mnx3SpuLH52WrCM5W3R0HFavUQ3+wOqUBunBK9l+P8O7fWyDWj5YRu/SY4a4clQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ssaprankov\\source\\repos\\ChangePass\\ChangePass\\ChangePass.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ssaprankov\\.nuget\\packages\\cake.powershell\\2.0.0\\cake.powershell.2.0.0.nupkg.sha512",
+    "C:\\Users\\ssaprankov\\.nuget\\packages\\dotnetzip\\1.16.0\\dotnetzip.1.16.0.nupkg.sha512",
     "C:\\Users\\ssaprankov\\.nuget\\packages\\markdig.signed\\0.22.0\\markdig.signed.0.22.0.nupkg.sha512",
     "C:\\Users\\ssaprankov\\.nuget\\packages\\microsoft.applicationinsights\\2.18.0\\microsoft.applicationinsights.2.18.0.nupkg.sha512",
     "C:\\Users\\ssaprankov\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\5.0.0\\microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
