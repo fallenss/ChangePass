@@ -10,7 +10,7 @@ try
 {
 
 
-string path = "/Users/ssaprankov/Desktop/pas.txt";
+string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "pas.txt");
 
 int i = 0;
 string pasic;
@@ -67,12 +67,13 @@ ps.Runspace = rs;
             ps.AddParameter("–PassThru");
             await writer.WriteLineAsync(Data[i] + ' ' + pasic);
         }
+        Console.WriteLine();
         Console.WriteLine("WORK IN PROGRESS");
-       // ps.Invoke();
+        ps.Invoke();
         Console.WriteLine("DONE");
     }
 
-
+    Console.WriteLine();
     Console.WriteLine("PREPARING REPORT:");
     // Call the PowerShell.Invoke() method to run
     // the pipeline synchronously.
@@ -110,9 +111,9 @@ ps.Runspace = rs;
         // сохраняем архив
         zip.Save("pas.zip");
     }
-
-    System.Diagnostics.Process.Start(@"C:\Users\ssaprankov\source\repos\ChangePass\ChangePass\bin\Debug\net6.0\Send.exe");
-
+    string path2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Send.exe");
+    System.Diagnostics.Process.Start(path2);
+    Console.ReadKey();
 }
 catch (Exception)
 {
